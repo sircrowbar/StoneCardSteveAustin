@@ -13,5 +13,5 @@ Makes a very Attitude Era thing happen in Balatro. (In audio form only.)
 
 ## Other Links
 
-https://www.youtube.com/@johannhat - Videos of a video kind.
-http://www.videodeathloop.com/ - A Comedy Podcast where we watch things on loop until we can't take it anymore.
+- https://www.youtube.com/@johannhat - Videos of a video kind.
+- http://www.videodeathloop.com/ - A Comedy Podcast where we watch things on loop until we can't take it anymore.
