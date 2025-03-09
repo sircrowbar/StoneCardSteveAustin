@@ -1,6 +1,6 @@
 # StoneCardSteveAustin, a Balatro Mod by Risky Sweep 
 
-Makes a very Attitude Era thing happen in Balatro.
+Makes a very Attitude Era thing happen in Balatro. (In audio form only.)
 
 ![Someone give this guy a beer](what.png)
 
