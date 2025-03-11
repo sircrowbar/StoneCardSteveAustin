@@ -5,8 +5,8 @@
 --Hey, it works
 sendTraceMessage("WHAT?! Audience is primed.", "StoneCardSteveAustin")
 
+local isCardActive = false
 local itWasMeAustin = false
-local currentRound = 0
 
 --Creates an atlas for cards to use
 SMODS.Atlas {
@@ -32,7 +32,7 @@ SMODS.Joker {
 		}
 	},
 	
-	config = { extra = { x_current_mult = 1, x_default_mult = 1, x_mult = 3, stone_card_added_chips = 16, in_ring = false } },
+	config = { extra = { x_current_mult = 1, x_default_mult = 1, x_mult = 3, stone_card_added_chips = 16, in_ring = false, current_round = 0 } },
 
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.extra.x_mult, card.ability.extra.stone_card_added_chips, card.ability.extra.x_current_mult } }
@@ -88,6 +88,7 @@ SMODS.Joker {
 		if context.end_of_round and context.cardarea == G.jokers then		
 			card.ability.extra.in_ring = false
 			card.ability.extra.x_current_mult = card.ability.extra.x_default_mult
+			card.ability.extra.current_round = 0
 		end
 
 	end
@@ -105,21 +106,25 @@ SMODS.Sound({
     select_music_track = function()
 	
 		local primed = false
+		local lastActiveCardRound = 0
 
 		if (G.jokers ~= nil and itWasMeAustin ~= true) then
 			for k, v in pairs(G.jokers.cards) do
 				if v.config.center.name == "j_stonecardsteveaustin_stonecold" then
 					primed = true
+					isCardActive = v.ability.extra.in_ring 
+					lastActiveCardRound = v.ability.extra.current_round
 					break
 				end
 			end				
 		end
 
 		--The start of a new round is the start of a new match. Stone Cold lies in wait.
-		if (itWasMeAustin ~= false and G.GAME.round ~= currentRound) or primed == false then
+		if (itWasMeAustin ~= false and G.GAME.round ~= lastActiveCardRound) or primed == false then
 
 			itWasMeAustin = false
 
+			--Set the default mult from here.
 			if (G.jokers ~= nil) then
 				for k, v in pairs(G.jokers.cards) do
 					if v.config.center.name == "j_stonecardsteveaustin_stonecold" then
@@ -130,6 +135,9 @@ SMODS.Sound({
 				end		
 			end
 
+		elseif primed and isCardActive == true then
+			sendTraceMessage("Card active!!!", "StoneCardSteveAustin")
+			itWasMeAustin = 1000
 		elseif primed and G.playing_cards ~= nil then
 
 			--Check for broken class in the playing cards.
@@ -137,18 +145,19 @@ SMODS.Sound({
 				if (v.shattered == true and v.dissolve == 1) then
 					sendTraceMessage("IT WAS ME AUSTIN!!!!", "StoneCardSteveAustin")
 
+					--Set the mult from here.
 					if (G.jokers ~= nil) then
 						for k, v in pairs(G.jokers.cards) do
 							if v.config.center.name == "j_stonecardsteveaustin_stonecold" then
 								v.ability.extra.in_ring = true
 								v.ability.extra.x_current_mult = v.ability.extra.x_mult
+								v.ability.extra.current_round = G.GAME.round
 								break
 							end
 						end		
 					end
 
 					--Save the current round for reference
-					currentRound = G.GAME.round
 					itWasMeAustin = 1000
 
 					break					
