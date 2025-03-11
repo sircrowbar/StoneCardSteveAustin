@@ -45,17 +45,17 @@ SMODS.Joker {
 	cost = 4,
 	calculate = function(self, card, context)
 
-		-- If the titantron is playing, then activate the ability.
-		if (itWasMeAustin and card.ability.extra.in_ring == false) then
-			card.ability.extra.in_ring = true
-			card.ability.extra.x_current_mult = card.ability.extra.x_mult
-		end
+		-- -- If the titantron is playing, then activate the ability.
+		-- if (itWasMeAustin and card.ability.extra.in_ring == false) then
+		-- 	card.ability.extra.in_ring = true
+		-- 	card.ability.extra.x_current_mult = card.ability.extra.x_mult
+		-- end
 		
-		-- If the music is done we're done for now.
-		if (itWasMeAustin == false and card.ability.extra.in_ring == true) then
-			card.ability.extra.in_ring = false
-			card.ability.extra.x_current_mult = card.ability.extra.x_default_mult
-		end
+		-- -- If the music is done we're done for now.
+		-- if (itWasMeAustin == false and card.ability.extra.in_ring == true) then
+		-- 	card.ability.extra.in_ring = false
+		-- 	card.ability.extra.x_current_mult = card.ability.extra.x_default_mult
+		-- end
 
 		sendTraceMessage("XMult: " .. card.ability.extra.x_current_mult , "StoneCardSteveAustin")		
 
@@ -110,48 +110,52 @@ SMODS.Sound({
 			for k, v in pairs(G.jokers.cards) do
 				if v.config.center.name == "j_stonecardsteveaustin_stonecold" then
 					primed = true
-
-					-- --If we are currently in an activated mult (Glass broke in round before save), then let's kick out the jams.
-					-- if v.ability.extra.in_ring == true then
-					-- 	itWasMeAustin = 1000
-					-- end
 					break
 				end
 			end				
 		end
 
 		--The start of a new round is the start of a new match. Stone Cold lies in wait.
-		if (itWasMeAustin ~= false and G.GAME.round ~= currentRound) or primed == false
-		then
+		if (itWasMeAustin ~= false and G.GAME.round ~= currentRound) or primed == false then
+
 			itWasMeAustin = false
-		end
-		
-		--Check the playing cards for a shattered one that has completely dissolved before playing
-		--the titantron.
-		if primed and G.playing_cards ~= nil then
+
+			if (G.jokers ~= nil) then
+				for k, v in pairs(G.jokers.cards) do
+					if v.config.center.name == "j_stonecardsteveaustin_stonecold" then
+						v.ability.extra.in_ring = false
+						v.ability.extra.x_current_mult = v.ability.extra.x_default_mult
+						break
+					end
+				end		
+			end
+
+		elseif primed and G.playing_cards ~= nil then
+
+			--Check for broken class in the playing cards.
 			for k, v in pairs(G.playing_cards) do
 				if (v.shattered == true and v.dissolve == 1) then
 					sendTraceMessage("IT WAS ME AUSTIN!!!!", "StoneCardSteveAustin")
+
+					if (G.jokers ~= nil) then
+						for k, v in pairs(G.jokers.cards) do
+							if v.config.center.name == "j_stonecardsteveaustin_stonecold" then
+								v.ability.extra.in_ring = true
+								v.ability.extra.x_current_mult = v.ability.extra.x_mult
+								break
+							end
+						end		
+					end
+
 					--Save the current round for reference
 					currentRound = G.GAME.round
 					itWasMeAustin = 1000
+
 					break					
 				end
 			end	
-
-			-- for k, v in pairs(G.jokers.cards) do
-			-- 	if v.config.center.name == "j_stonecardsteveaustin_stonecold" then
-			-- 		primed = true
-
-			-- 		--If we are currently in an activated mult (Glass broke in round before resuming game), then let's kick out the jams.
-			-- 		if v.ability.extra.in_ring == true then
-			-- 			itWasMeAustin = 1000
-			-- 		end
-			-- 		break
-			-- 	end
-			-- end	
-
 		end
+		
 				
         return itWasMeAustin
     end,
