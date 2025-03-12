@@ -39,23 +39,11 @@ SMODS.Joker {
 	end,
 
 	-- Sets rarity. 1 common, 2 uncommon, 3 rare, 4 legendary.
-	rarity = 1,
+	rarity = 2,
 	atlas = 'StoneCold',
 	pos = { x = 0, y = 0 },
 	cost = 4,
 	calculate = function(self, card, context)
-
-		-- -- If the titantron is playing, then activate the ability.
-		-- if (itWasMeAustin and card.ability.extra.in_ring == false) then
-		-- 	card.ability.extra.in_ring = true
-		-- 	card.ability.extra.x_current_mult = card.ability.extra.x_mult
-		-- end
-		
-		-- -- If the music is done we're done for now.
-		-- if (itWasMeAustin == false and card.ability.extra.in_ring == true) then
-		-- 	card.ability.extra.in_ring = false
-		-- 	card.ability.extra.x_current_mult = card.ability.extra.x_default_mult
-		-- end
 
 		sendTraceMessage("XMult: " .. card.ability.extra.x_current_mult , "StoneCardSteveAustin")		
 
@@ -94,10 +82,6 @@ SMODS.Joker {
 	end
 }
 
---Bugs 
--- 3X does not resume if continue game
--- music does not play if continue from new window
--- Readjust calc?
 SMODS.Sound({
     vol = 0.6,
     pitch = 1,
@@ -136,7 +120,6 @@ SMODS.Sound({
 			end
 
 		elseif primed and isCardActive == true then
-			sendTraceMessage("Card active!!!", "StoneCardSteveAustin")
 			itWasMeAustin = 1000
 		elseif primed and G.playing_cards ~= nil then
 
