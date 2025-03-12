@@ -27,7 +27,7 @@ SMODS.Joker {
 		text = {
 			"If a glass card is broken gain",
 			"{X:mult,C:white} X#1#{} Mult until the next round.",
-			"Stone cards give {C:stone_card_added_chips}+#2#{} chips",
+			"Stone cards give {C:chips}+#2#{} chips",
 			"(Currently {X:mult,C:white} X#3#{})"
 		}
 	},
