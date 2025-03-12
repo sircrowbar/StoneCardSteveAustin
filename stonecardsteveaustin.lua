@@ -25,7 +25,7 @@ SMODS.Joker {
 	loc_txt = {
 		name = 'Stone Cold Joker',
 		text = {
-			"If a glass card is broken gain",
+			"If a glass card is broken get",
 			"{X:mult,C:white} X#1#{} Mult until the next round.",
 			"Stone cards give {C:chips}+#2#{} chips",
 			"(Currently {X:mult,C:white} X#3#{})"
